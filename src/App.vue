@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
-    <header>我是header</header>
+    <VHeader></VHeader>
     <div class="content-wrapper">
       我是内容
     </div>
@@ -12,13 +11,13 @@
 </template>
 
 <script>
-  import Header from './components/Header/Header'
+  import Header from '@/components/Header/Header'
 
   export default {
     name: 'app',
     components: {
-      Header
-    }
+      VHeader: Header,
+    },
   }
 </script>
 
