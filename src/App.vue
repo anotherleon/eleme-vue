@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <VHeader></VHeader>
-    <div class="content-wrapper">
+    <VHeader :seller="seller"></VHeader>
+    <div class="">
       我是内容
     </div>
     <footer>
@@ -11,12 +11,28 @@
 </template>
 
 <script>
+  // import Axios from 'axios'
   import Header from '@/components/Header/Header'
+  import response from '@/assets/data.json'
 
   export default {
     name: 'app',
     components: {
       VHeader: Header,
+    },
+    data() {
+      return {
+        seller: {},
+      }
+    },
+    created() {
+      this.init()
+    },
+    methods: {
+      async init() {
+        // Axios.get()
+        this.seller = response.seller
+      },
     },
   }
 </script>
@@ -26,8 +42,8 @@
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
+    /*text-align: center;*/
+    /*color: #2c3e50;*/
+/*    margin-top: 60px;*/
   }
 </style>
