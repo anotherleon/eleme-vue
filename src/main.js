@@ -2,7 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from '@/App'
-// require('./assets/stylus/base.styl')
+import '@/assets/css/reset.css'
+import '@/assets/stylus/iconfont.styl'
+// require('./common/stylus/iconfont.styl')
 
 
 Vue.config.productionTip = false

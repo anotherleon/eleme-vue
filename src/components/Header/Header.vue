@@ -15,10 +15,12 @@
         <div class="support">
           <span class="type"></span>
           <span class="desc">{{seller.supports[0].description}}</span>
-        </div>      <!-- discounts -->
-        <div class="support-count">{{seller.supports.length}}个</div> <!-- discounts-count -->
-        <i class="icon-keyboard_arrow_right"></i>
+        </div>      <!-- discounts --> 
       </div> 
+      <div class="support-count"> <!-- discounts-count -->
+        <span class="count">{{seller.supports.length}}个</span> 
+        <i class="icon-keyboard_arrow_right"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -38,6 +40,7 @@
   .header
     position: relative
     .content-wrapper
+      position: relative
       padding: 24px 12px 18px 24px
       font-size: 0
       background-color: #ccc
@@ -73,13 +76,15 @@
             background-size: 16px 16px
           .desc
             font-size: 10px
-    .support-count
-      position: absolute
-      display: block
-      right: 12px
-      bottom: 18px
-      padding: 7px 8px
-      border-radius: 8px
-      font-size: 10px
-      background-color: rgba(0,0,0,0.2)
+      .support-count
+        position: absolute
+        display: block
+        right: 12px
+        bottom: 18px
+        padding: 7px 8px
+        border-radius: 8px
+        font-size: 10px
+        background-color: rgba(0,0,0,0.2)
+       .icon-keyboard_arrow_right
+         font-size: 10px    
 </style>
