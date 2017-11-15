@@ -1,20 +1,23 @@
 <template>
   <div class="test">
-    测试
+    <div class="content-wrapper">
+      <span>
+        我是测试测试测试
+      </span>
+    </div>
   </div>
 </template>
 <script>
   export default {
-    name: 'Test',
+    name: 'test',
   }
 </script>
 <style type="text/css" lang="stylus" scoped>
   .test
     position: relative
-    background-color: #00f
     .content-wrapper
       position: relative
-      padding: 24px 12px 18px 24px
-      font-size: 0
-      background-color: #ccc   
+      padding: 60px 0                                      
+      background-color: #ddd  
 </style>
+

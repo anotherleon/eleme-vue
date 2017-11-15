@@ -43,7 +43,7 @@
       position: relative
       padding: 24px 12px 18px 24px
       font-size: 0
-      background-color: #ccc
+      background-color: #999
       .avatar
         display: inline-block
         margin-right: 16px

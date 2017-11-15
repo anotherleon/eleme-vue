@@ -1,14 +1,14 @@
 <template>
   <div id="app">
     <!-- <router-view></router-view> -->
-    <VHeader :seller="seller"></VHeader>
-    <!-- <router-view></router-view> -->
-<!--     <div class="">
+    <VHeader :seller='seller'></VHeader>
+    <router-view></router-view>
+    <div class="">
       我是内容
     </div>
     <footer>
       我是页脚
-    </footer> -->
+    </footer>
   </div>
 </template>
 
