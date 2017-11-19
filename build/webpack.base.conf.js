@@ -25,7 +25,9 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-    }
+      'assets': resolve('src/assets'),
+      'components': resolve('src/components'),
+    },
   },
   module: {
     rules: [
@@ -37,7 +39,7 @@ module.exports = {
         options: {
           formatter: require('eslint-friendly-formatter'),
           emitWarning: !config.dev.showEslintErrorsInOverlay
-        }
+        },
       }] : []),
       {
         test: /\.vue$/,

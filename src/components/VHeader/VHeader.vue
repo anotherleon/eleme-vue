@@ -1,0 +1,207 @@
+<template>
+  <div class="header">
+    <div class="content-wrapper">
+      <div class="avatar">
+        <img width="64" height="64" :src="seller.avatar"> 
+      </div>
+      <div class="content">
+        <div class="title">
+          <span class="brand"></span>
+          <span class="name">{{seller.name}}</span>
+        </div>
+        <div class="description"> <!-- delivery -->
+          {{seller.description}}/{{seller.deliveryTime}} 分钟送达   
+        </div> 
+        <div class="support" v-if="seller.supports">
+          <span class="type" :class="classMap[seller.supports[0].type]"></span>
+          <span class="desc">{{seller.supports[0].description}}</span>
+        </div>      <!-- discounts --> 
+      </div> 
+      <div class="support-count"> <!-- discounts-count -->
+        <span class="count">{{seller.supports.length}}个</span>
+        <i class="icon-keyboard_arrow_right"></i>
+      </div>
+    </div>
+    <div class="bulletin-wrapper" @click="showDetail()">
+      <span class="title"></span>
+      <span class="text">{{seller.bulletin}}</span>
+      <i class="icon-keyboard_arrow_right"></i>
+    </div>
+    <div class="background">
+      <img :src="seller.avatar" width="100%" height="100%">
+    </div>
+    <div class="detail" v-show="isShowDetail">
+      <div class="title">
+        {{seller.name}}
+      </div>
+      <div class="rating">
+        <rating-star :score="seller.score"></rating-star>
+      </div>
+      <div class="supports">
+        <div>优惠信息</div>
+        <div v-for="(item,index) in seller.supports">
+          <span class="type"></span><span class="desc">{{item.description}}</span>
+        </div>
+      </div>
+      <div class="bulletin">
+        <div>商家公告</div>
+        <p>
+          {{seller.bulletin}}
+        </p>
+      </div>
+
+    </div>
+  </div>
+</template>
+<script>
+  import RatingStar from '../RatingStar/RatingStar'
+
+  export default {
+    name: 'VHeader',
+    components: {
+      RatingStar,
+    },
+    props: {
+      seller: {
+        type: Object,
+        required: true,
+      },
+    },
+    data() {
+      return {
+        isShowDetail: true,
+      }
+    },
+    created() {
+      this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+    },
+    methods: {
+      showDetail() {
+        this.isShowDetail = true
+      },
+    },
+  }
+</script>
+<style type="text/css" lang="stylus" scoped>
+  @import('../../assets/stylus/mixin.styl')
+  
+  .header
+    position: relative
+    overflow: hidden
+    background: rgba(7, 17, 27, 0.5)
+    color: #fff
+    .content-wrapper
+      position: relative
+      padding: 24px 12px 18px 24px
+      font-size: 0
+      .avatar
+        display: inline-block
+        vertical-align: top
+        background-color: #ccc
+        img
+          border-radius: 2px
+      .content
+        display: inline-block
+        margin-left: 16px
+        // vertical-align: top
+        .title
+          margin: 2px 0 8px 0
+          .brand
+            display: inline-block
+            vertical-align: top
+            width: 30px
+            height: 18px
+            margin-right: 6px
+            bg-image(brand)
+            background-size: 30px 18px
+          .name
+            font-size: 6px
+            // line-height: 18px
+            font-weight: 700
+        .description
+          margin-bottom: 10px
+          line-height: 12px
+          font-size: 12px
+        .support
+          .type
+            display: inline-block
+            vertical-align: top
+            width: 12px
+            height: 12px
+            margin-right: 4px
+            background-size: 12px 12px
+            &.decrease
+              bg-image(decrease_1)
+            &.discount
+              bg-image(discount_1)
+            &.special
+              bg-image(special_1)
+            &.invoice
+              bg-image(invoice_1)
+            &.guarantee
+              bg-image(guarantee_1)
+          .desc
+            line-height: 12px
+            font-size: 10px
+      .support-count
+        position: absolute
+        right: 12px
+        bottom: 14px
+        padding: 0px 8px
+        height: 24px
+        line-height: 24px
+        border-radius: 14px
+        background-color: rgba(0,0,0,0.2)
+        .count
+          font-size: 10px
+        .icon-keyboard_arrow_right
+         margin-left: 2px
+         line-height: 24px
+         font-size: 10px   
+    .bulletin-wrapper 
+      position: relative
+      padding: 0px 22px 0px 12px
+      height: 28px
+      line-height: 28px
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+      background: rgba(7, 17, 27, 0.2)
+      .title
+        display: inline-block
+        vertical-align: middle
+        // margin-top: 8px
+        width: 22px
+        height: 12px
+        bg-image(bulletin)
+        background-size: 22px 12px
+      .text
+        margin: 0 4px
+        font-size: 10px
+        vertical-align: middle
+      .icon-keyboard_arrow_right
+        position: absolute
+        rig
+        ht: 12px
+        top: 8px
+        font-size: 10px
+    .background
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      z-index: -1
+      filter: blur(10px)
+    .detail
+      position: fixed
+      top: 0
+      left: 0
+      min-height: 100%
+      padding: 64px 32px 32px 32px
+      background: rgba(2,2,2,0.8)
+      .title
+        font-size:16px
+        font-weight: bold
+        text-align: center        
+</style>

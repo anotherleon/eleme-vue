@@ -1,26 +1,30 @@
 <template>
   <div id="app">
-    <!-- <router-view></router-view> -->
-    <VHeader :seller='seller'></VHeader>
-    <router-view></router-view>
-    <div class="">
-      我是内容
+    <v-header :seller='seller'></v-header>
+    <div class="tab">
+      <div class="tab-item">
+        <router-link to="/goods">商品</router-link>
+      </div>
+      <div class="tab-item">
+        <router-link to="/rating">评价</router-link>
+      </div>
+      <div class="tab-item">
+        <router-link to="/seller">商家</router-link>
+      </div>
     </div>
-    <footer>
-      我是页脚
-    </footer>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
   // import Axios from 'axios'
-  import Header from '@/components/Header/Header'
-  import response from '@/assets/data.json'
+  import VHeader from 'components/VHeader/VHeader'
+  import response from 'assets/data.json'
 
   export default {
     name: 'app',
     components: {
-      VHeader: Header,
+      VHeader,
     },
     data() {
       return {
@@ -39,13 +43,15 @@
   }
 </script>
 
-<style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    /*text-align: center;*/
-    /*color: #2c3e50;*/
-/*    margin-top: 60px;*/
-  }
+<style type="text/css" lang="stylus" scoped>
+  #app
+    .tab
+      display: flex
+      justify-content: center
+      .tab-item
+        flex: auto
+        text-align: center
+        background-color: #ccc
+        height: 30px
+        line-height: 30px
 </style>

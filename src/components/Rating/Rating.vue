@@ -1,11 +1,11 @@
 <template>
-  <div class="goods">
-    我是商品
+  <div class="rating">
+    我是评论
   </div>
 </template>
 <script type="text/javascript">
   export default {
-    name: 'Goods',
+    name: 'Rating',
   }
 </script>
 <style type="text/css" lang="stylus" scoped>
