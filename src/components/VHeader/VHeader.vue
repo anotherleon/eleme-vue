@@ -31,25 +31,33 @@
       <img :src="seller.avatar" width="100%" height="100%">
     </div>
     <div class="detail" v-show="isShowDetail">
-      <div class="title">
-        {{seller.name}}
-      </div>
+      <h1 class="title">{{seller.name}}</h1>
       <div class="rating">
         <rating-star :score="seller.score"></rating-star>
       </div>
-      <div class="supports">
+      <div class="support-title">
+        <div class="line"></div>
+        <div class="text">优惠信息</div>
+        <div class="line"></div>
+      </div>
+      <ul class="supports" v-if="seller.supports">
+        <li class="support-item" v-for="(item,index) in seller.supports">
+          <span class="type"></span>
+          <span class="desc">{{item.description}}</span>
+        </li>
+      </ul>
+<!--       <div class="supports">
         <div>优惠信息</div>
         <div v-for="(item,index) in seller.supports">
           <span class="type"></span><span class="desc">{{item.description}}</span>
         </div>
-      </div>
+      </div> -->
       <div class="bulletin">
         <div>商家公告</div>
         <p>
           {{seller.bulletin}}
         </p>
       </div>
-
     </div>
   </div>
 </template>
@@ -203,5 +211,20 @@
       .title
         font-size:16px
         font-weight: bold
-        text-align: center        
+        text-align: center
+      .support-title
+        display: flex
+        text-align: center
+        .line
+          flex: 1
+          position: relative
+          top: -8px
+          border-bottom: 1px solid rgba(255, 255, 255, 0.2)
+        .text
+          margin: 0 10px
+          font-size: 16px
+          font-weight: bold
+          // &:after
+          //   content: ""
+          //   border-bottom: 1px solid rgba(255, 255, 255, 0.2)
 </style>
