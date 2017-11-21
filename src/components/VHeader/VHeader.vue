@@ -31,32 +31,36 @@
       <img :src="seller.avatar" width="100%" height="100%">
     </div>
     <div class="detail" v-show="isShowDetail">
-      <h1 class="title">{{seller.name}}</h1>
-      <div class="rating">
-        <rating-star :score="seller.score"></rating-star>
-      </div>
-      <div class="support-title">
-        <div class="line"></div>
-        <div class="text">优惠信息</div>
-        <div class="line"></div>
-      </div>
-      <ul class="supports" v-if="seller.supports">
-        <li class="support-item" v-for="(item,index) in seller.supports">
-          <span class="type"></span>
-          <span class="desc">{{item.description}}</span>
-        </li>
-      </ul>
-<!--       <div class="supports">
-        <div>优惠信息</div>
-        <div v-for="(item,index) in seller.supports">
-          <span class="type"></span><span class="desc">{{item.description}}</span>
+      <div class="detail-main">
+        <h1 class="title">{{seller.name}}</h1>
+        <div class="rating">
+          <rating-star :score="seller.score"></rating-star>
         </div>
-      </div> -->
-      <div class="bulletin">
-        <div>商家公告</div>
-        <p>
-          {{seller.bulletin}}
-        </p>
+        <div class="support-title">
+          <div class="line"></div>
+          <div class="text">优惠信息</div>
+          <div class="line"></div>
+        </div>
+        <ul class="supports" v-if="seller.supports">
+          <li class="support-item" v-for="(item,index) in seller.supports">
+            <span class="type" :class="classMap[item.type]"></span>
+            <span class="desc">{{item.description}}</span>
+          </li>
+        </ul>
+        <div class="bulletin-title">
+          <div class="line"></div>
+          <div class="text">商家公告</div>
+          <div class="line"></div>
+        </div>
+        <div class="bulletin">
+          <p> {{seller.bulletin}} </p>
+          <p> {{seller.bulletin}} </p>
+          <p> {{seller.bulletin}} </p>
+          <p> {{seller.bulletin}} </p>
+        </div>
+      </div>
+      <div class="detail-close">
+        <i class="icon-close"></i>
       </div>
     </div>
   </div>
@@ -205,26 +209,69 @@
       position: fixed
       top: 0
       left: 0
+      // width: 100%
+      height: 100%
       min-height: 100%
-      padding: 64px 32px 32px 32px
-      background: rgba(2,2,2,0.8)
-      .title
-        font-size:16px
-        font-weight: bold
-        text-align: center
-      .support-title
-        display: flex
-        text-align: center
-        .line
-          flex: 1
-          position: relative
-          top: -8px
-          border-bottom: 1px solid rgba(255, 255, 255, 0.2)
-        .text
-          margin: 0 10px
-          font-size: 16px
+      padding: 0px 32px 32px 32px
+      overflow: auto
+      background: rgba(7, 17, 27, 0.8)
+      .detail-main
+        margin-top: 64px
+        padding-bottom: 64px
+        // min-height: 100%
+        .title
+          font-size:16px
           font-weight: bold
-          // &:after
-          //   content: ""
-          //   border-bottom: 1px solid rgba(255, 255, 255, 0.2)
+          text-align: center
+        .support-title,.bulletin-title
+          display: flex
+          margin: 28px 0 24px 0;
+          text-align: center
+          .line
+            flex: 1
+            position: relative
+            top: -8px
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2)
+          .text
+            margin: 0 10px
+            font-size: 16px
+            font-weight: bold
+        .supports
+          margin: 0 12px
+           // line-height: 20px
+           font-size: 0
+          .type
+            display: inline-block
+            vertical-align: middle
+            margin: 6px 0
+            width: 16px
+            height: 16px
+            margin-right: 6px
+            background-size: 16px 16px
+            &.decrease
+              bg-image(decrease_2)
+            &.discount
+              bg-image(discount_2)
+            &.special
+              bg-image(special_2)
+            &.invoice
+              bg-image(invoice_2)
+            &.guarantee
+              bg-image(guarantee_2)
+          .desc
+            display: inline-block
+            vertical-align: middle
+            font-size: 12px
+          .bulletin
+            margin: 0 12px
+            line-height: 24px
+      .detail-close
+        position: relative
+        margin: -64px auto 0 auto
+        width: 32px
+        height: 32px
+        text-align: center
+        font-size: 32px
+        clear: both
+        
 </style>
