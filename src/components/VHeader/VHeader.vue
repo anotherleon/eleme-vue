@@ -81,7 +81,7 @@
     },
     data() {
       return {
-        isShowDetail: true,
+        isShowDetail: false,
       }
     },
     created() {
