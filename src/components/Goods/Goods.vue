@@ -11,9 +11,9 @@
         count: 0,
       }
     },
-    methods:{
+    methods: {
       increase() {
-        this.count ++
+        this.count += 1
       },
     },
   }

@@ -17,7 +17,7 @@
           <span class="desc">{{seller.supports[0].description}}</span>
         </div>      <!-- discounts --> 
       </div> 
-      <div class="support-count"> <!-- discounts-count -->
+      <div class="support-count" @click="showDetail"> <!-- discounts-count -->
         <span class="count">{{seller.supports.length}}个</span>
         <i class="icon-keyboard_arrow_right"></i>
       </div>
@@ -30,39 +30,42 @@
     <div class="background">
       <img :src="seller.avatar" width="100%" height="100%">
     </div>
-    <div class="detail" v-show="isShowDetail">
-      <div class="detail-main">
-        <h1 class="title">{{seller.name}}</h1>
-        <div class="rating">
-          <rating-star :score="seller.score"></rating-star>
+    <transition name="fade">
+      <div class="detail" v-show="isShowDetail">
+        <div class="detail-wrapper clearfix">
+          <div class="detail-main">
+            <h1 class="title">{{seller.name}}</h1>
+            <div class="rating">
+              <rating-star :score="seller.score"></rating-star>
+            </div>
+            <div class="support-title">
+              <div class="line"></div>
+              <div class="text">优惠信息</div>
+              <div class="line"></div>
+            </div>
+            <ul class="supports" v-if="seller.supports">
+              <li class="support-item" v-for="(item,index) in seller.supports">
+                <span class="type" :class="classMap[item.type]"></span>
+                <span class="desc">{{item.description}}</span>
+              </li>
+            </ul>
+            <div class="bulletin-title">
+              <div class="line"></div>
+              <div class="text">商家公告</div>
+              <div class="line"></div>
+            </div>
+            <div class="bulletin">
+              <p> {{seller.bulletin}} </p>
+              <p> {{seller.bulletin}} </p>
+              <p> {{seller.bulletin}} </p>
+            </div>
+          </div>          
         </div>
-        <div class="support-title">
-          <div class="line"></div>
-          <div class="text">优惠信息</div>
-          <div class="line"></div>
-        </div>
-        <ul class="supports" v-if="seller.supports">
-          <li class="support-item" v-for="(item,index) in seller.supports">
-            <span class="type" :class="classMap[item.type]"></span>
-            <span class="desc">{{item.description}}</span>
-          </li>
-        </ul>
-        <div class="bulletin-title">
-          <div class="line"></div>
-          <div class="text">商家公告</div>
-          <div class="line"></div>
-        </div>
-        <div class="bulletin">
-          <p> {{seller.bulletin}} </p>
-          <p> {{seller.bulletin}} </p>
-          <p> {{seller.bulletin}} </p>
-          <p> {{seller.bulletin}} </p>
+        <div class="detail-close" @click="close">
+          <i class="icon-close"></i>
         </div>
       </div>
-      <div class="detail-close">
-        <i class="icon-close"></i>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 <script>
@@ -90,6 +93,9 @@
     methods: {
       showDetail() {
         this.isShowDetail = true
+      },
+      close() {
+        this.isShowDetail = false
       },
     },
   }
@@ -209,15 +215,17 @@
       position: fixed
       top: 0
       left: 0
-      // width: 100%
+      // min-height: 100%
       height: 100%
-      min-height: 100%
-      padding: 0px 32px 32px 32px
       overflow: auto
       background: rgba(7, 17, 27, 0.8)
-      .detail-main
+      .detail-wrapper
+         min-height: 100%
+        .detail-main
+        margin: 0 auto
         margin-top: 64px
         padding-bottom: 64px
+        width: 80%
         // min-height: 100%
         .title
           font-size:16px
@@ -267,11 +275,14 @@
             line-height: 24px
       .detail-close
         position: relative
-        margin: -64px auto 0 auto
         width: 32px
         height: 32px
+        margin: -54px auto 0 auto
         text-align: center
         font-size: 32px
         clear: both
-        
+    .fade-enter, .fade-leave-to
+      opacity: 0
+    .fade-enter-active, .fade-leave-active
+      transition: opacity .5s
 </style>
