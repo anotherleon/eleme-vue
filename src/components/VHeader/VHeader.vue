@@ -36,7 +36,7 @@
           <div class="detail-main">
             <h1 class="title">{{seller.name}}</h1>
             <div class="rating">
-              <rating-star :score="seller.score"></rating-star>
+              <star :size="48" :score="seller.score"></star>
             </div>
             <div class="support-title">
               <div class="line"></div>
@@ -69,12 +69,12 @@
   </div>
 </template>
 <script>
-  import RatingStar from '../RatingStar/RatingStar'
+  import Star from '../Star/Star'
 
   export default {
     name: 'VHeader',
     components: {
-      RatingStar,
+      Star,
     },
     props: {
       seller: {
