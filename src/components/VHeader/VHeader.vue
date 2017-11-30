@@ -36,7 +36,7 @@
           <div class="detail-main">
             <h1 class="title">{{seller.name}}</h1>
             <div class="rating">
-              <star :size="48" :score="seller.score"></star>
+              <star-rating :size="48" :score="seller.score"></star-rating>
             </div>
             <div class="support-title">
               <div class="line"></div>
@@ -69,12 +69,12 @@
   </div>
 </template>
 <script>
-  import Star from '../Star/Star'
+  import StarRating from '../StarRating/StarRating'
 
   export default {
     name: 'VHeader',
     components: {
-      Star,
+      StarRating,
     },
     props: {
       seller: {
@@ -215,11 +215,12 @@
       position: fixed
       top: 0
       left: 0
-      // min-height: 100%
+      width: 100%
       height: 100%
       overflow: auto
       background: rgba(7, 17, 27, 0.8)
       .detail-wrapper
+         width: 100%
          min-height: 100%
         .detail-main
         margin: 0 auto
@@ -228,8 +229,13 @@
         width: 80%
         // min-height: 100%
         .title
+          margin-bottom: 16px
           font-size:16px
           font-weight: bold
+          text-align: center
+        .rating
+          margin: 18px
+          padding: 2px 0
           text-align: center
         .support-title,.bulletin-title
           display: flex
