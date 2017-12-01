@@ -218,16 +218,16 @@
       width: 100%
       height: 100%
       overflow: auto
+      z-index: 99
       background: rgba(7, 17, 27, 0.8)
       .detail-wrapper
          width: 100%
          min-height: 100%
         .detail-main
-        margin: 0 auto
-        margin-top: 64px
-        padding-bottom: 64px
-        width: 80%
-        // min-height: 100%
+          margin: 0 auto
+          margin-top: 64px
+          padding-bottom: 64px
+          width: 80%
         .title
           margin-bottom: 16px
           font-size:16px
@@ -276,9 +276,10 @@
             display: inline-block
             vertical-align: middle
             font-size: 12px
-          .bulletin
-            margin: 0 12px
-            line-height: 24px
+        .bulletin
+          margin: 0 12px
+          line-height: 24px
+          font-size: 12px
       .detail-close
         position: relative
         width: 32px
