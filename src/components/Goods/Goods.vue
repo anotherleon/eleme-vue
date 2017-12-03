@@ -1,13 +1,13 @@
 <template>
   <div class="goods">
-    <div class="menu-wrapper">
+    <div class="menu-wrapper" ref="menu">
       <ul>
         <li class="menu-item" :class="{current: currentIndex === index}" v-for="(item,index) in goods" @click="chooseMenu(index,$event)">
           <span class="text border-1px">{{item.name}}</span>
         </li>
       </ul>
     </div>
-    <div class="foods-wrapper">
+    <div class="foods-wrapper" ref="foods">
       <ul>
         <li class="foods-list" v-for="(item,index) in goods" :key="index">
           <h2 class="title">{{item.name}}</h2>
@@ -28,6 +28,7 @@
   </div>
 </template>
 <script type="text/javascript">
+  import BetterScroll from 'better-scroll'
   import response from 'assets/data.json'
   
   export default {
@@ -40,8 +41,22 @@
     },
     created() {
       this.goods = response.goods
+      this.$nextTick(() => {
+        this.init()
+      })
     },
+    // mounted() {
+    //   this.$nextTick(() => {
+    //     console.log('================')
+    //     // this.scroll = new BetterScroll(this.$refs.foods, {})
+    //   })
+    // },
     methods: {
+      init() {
+        console.log('================')
+        this.scrollFoods = new BetterScroll(this.$refs.foods, {})
+        // this.scrollMenu = new BetterScroll(this.$refs.menu, {})
+      },
       chooseMenu(index, event) {
         this.currentIndex = index
         console.log(event.target.name)
