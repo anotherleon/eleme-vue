@@ -17,7 +17,7 @@
               <img :src="food.icon" class="photo">
               <div class="content">
                 <div class="name">{{food.name}}</div>
-                <div class="desc">{{food.description}}</div>
+                <p class="desc">{{food.description}}</p>
                 <div><span class="sell-count">月售{{food.sellCount}}份</span><span class="rating">好评率{{food.rating}}%</span></div>
                 <div><span class="price">￥{{food.price}}</span><span class="old-price" v-if="!!food.oldPrice">￥{{food.oldPrice}}</span></div>
               </div>
@@ -159,6 +159,7 @@
           color: rgb(147,153,159)
           background-color: #f3f5f7
         .foods-item
+          display: flex
           margin: 0 18px
           padding: 18px 0
           border-1px(rgba(7,17,27,0.1))
@@ -166,12 +167,14 @@
           &:last-child
             border-none()
           .photo
-            display:inline-block
+            // display:inline-block
+            flex: 0 0 57px
             width: 57px
             height: 57px
             vertical-align: top
           .content
-            display:inline-block
+            // display: inline-block
+            flex: 1
             font-size: 12px
             margin-left: 10px
             .name
@@ -180,9 +183,9 @@
               font-size: 14px
               color: rgb(7,17,27)
             .desc
-              margin: 8px auto
+              margin: 8px 0
               font-size: 10px
-              line-height: 10px
+              line-height: 16px
               color: rgb(147,153,159)
             .sell-count
               color: rgb(147,153,159)
@@ -197,6 +200,7 @@
               color: red
             .old-price
               line-height: 24px
+              text-decoration: line-through
               font-size: 10px
               font-weight: 700
               color: rgb(147,153,159)
