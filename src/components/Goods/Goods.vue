@@ -26,14 +26,19 @@
         </li>
       </ul>
     </div>
+    <shopcart></shopcart>
   </div>
 </template>
 <script type="text/javascript">
   import BetterScroll from 'better-scroll'
   import response from 'assets/data.json'
+  import Shopcart from 'components/Shopcart/Shopcart'
   
   export default {
     name: 'Goods',
+    components: {
+      Shopcart,
+    },
     data() {
       return {
         goods: [],
