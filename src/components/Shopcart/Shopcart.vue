@@ -6,11 +6,11 @@
           <span class="icon"><i class="icon-shopping_cart"></i> </span>
         </div>
         <!-- <span class="icon"><i class="icon-shopping_cart"></i> </span> -->
-        <span class="total">￥0</span>
-        <span class="delivery">另需配送费4元</span> 
+        <span class="total">￥{{totalPrice}}</span>
+        <span class="delivery">另需配送费{{deliveryPrice}}元</span> 
       </div>
       <div class="right">
-        ￥20元起送
+        ￥{{minPrice}}元起送
       </div>
     </div>
   </div>
@@ -18,6 +18,36 @@
 <script>
   export default {
     name: 'Shopcart',
+    props: {
+      chosenFoods: {
+        type: Array,
+        default() {
+          return [
+            {
+              price: 99,
+              count: 1,
+            },
+          ]
+        },
+      },
+      deliveryPrice: {
+        type: Number,
+        default: 0,
+      },
+      minPrice: {
+        type: Number,
+        default: 0,
+      },
+    },
+    computed: {
+      totalPrice() {
+        let total = 0
+        this.chosenFoods.forEach((item) => {
+          total += item.price * item.count
+        })
+        return total
+      },
+    },
   }
 </script>
 <style type="text/css" lang="stylus" scoped>

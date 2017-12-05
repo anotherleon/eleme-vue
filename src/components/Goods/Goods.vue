@@ -26,7 +26,7 @@
         </li>
       </ul>
     </div>
-    <shopcart></shopcart>
+    <shopcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
   </div>
 </template>
 <script type="text/javascript">
@@ -39,12 +39,18 @@
     components: {
       Shopcart,
     },
+    props: {
+      seller: {
+        type: Object,
+      },
+    },
     data() {
       return {
         goods: [],
         // currentIndex: 1,
         foodsListHeight: [],
         scrollY: 0,
+        chosenFoods: [],
       }
     },
     computed: {
