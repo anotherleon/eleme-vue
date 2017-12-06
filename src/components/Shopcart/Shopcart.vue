@@ -3,14 +3,17 @@
     <div class="content">
       <div class="left">
         <div class="icon-wrapper">
-          <span class="icon"><i class="icon-shopping_cart"></i> </span>
+          <span class="icon" :class="{'hightlight': totalCount>0}">
+            <i class="icon-shopping_cart"></i>
+          </span>
+          <span class="num" v-if="totalCount>0">{{totalCount}}</span>
         </div>
         <!-- <span class="icon"><i class="icon-shopping_cart"></i> </span> -->
-        <span class="total">￥{{totalPrice}}</span>
+        <span class="total" :class="{'hightlight': totalPrice>0}">￥{{totalPrice}}</span>
         <span class="delivery">另需配送费{{deliveryPrice}}元</span> 
       </div>
       <div class="right">
-        ￥{{minPrice}}元起送
+        <div class="pay" :class="[minPrice>totalPrice?'not-meet':'meet']">{{payDesc}}</div>
       </div>
     </div>
   </div>
@@ -24,8 +27,8 @@
         default() {
           return [
             {
-              price: 99,
-              count: 1,
+              price: 10,
+              count: 2,
             },
           ]
         },
@@ -47,11 +50,25 @@
         })
         return total
       },
+      totalCount() {
+        let count = 0
+        this.chosenFoods.forEach((item) => {
+          count += item.count
+        })
+        return count
+      },
+      payDesc() {
+        if (this.totalPrice === 0) {
+          return `￥${this.minPrice}元起送`
+        }
+        const d = this.totalPrice - this.minPrice
+        return (d >= 0 ? '去结算' : `还差￥${Math.abs(d)}元起送`)
+      },
     },
   }
 </script>
 <style type="text/css" lang="stylus" scoped>
- .shopcart
+  .shopcart
    position: fixed
    bottom: 0
    width: 100%
@@ -77,6 +94,7 @@
          border-radius: 50%
          text-align: center
          background-color: #141d17
+         // background-color: yellow
          .icon
            display: inline-block
            width: 100%
@@ -84,7 +102,25 @@
            border-radius: 50%
            line-height: 44px
            font-size: 24px
+           color: #80858a
            background-color: #2b343c
+           &.hightlight
+             color: #fff
+             background-color: rgb(0, 160, 220)
+         .num
+           position: absolute
+           top: 0
+           right: 0
+           width: 24px
+           height: 16px
+           border-radius: 12px
+           line-height: 16px
+           text-align: center
+           font-size: 10px
+           font-weight: 700
+           color: #fff
+           background-color:  rgb(240, 20, 20)
+           box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.4)
        .total
          display: inline-block
          vertical-align: top
@@ -95,6 +131,8 @@
          border-right: 1px solid rgba(255,255,255,0.1)
          font-size: 16px
          font-weight: 700
+         &.hightlight
+           color: #fff
        .delivery
          display: inline-block  
          vertical-align: top
@@ -105,10 +143,14 @@
      .right
        flex: 0 0 105px
        width: 105px
-       height: 48px
-       text-align: center
        line-height: 48px
-       font-size: 12px
-       font-weight: 700
-       background: #2b333b
+       .pay
+         text-align: center
+         font-size: 12px
+         font-weight: 700
+         &.meet
+           background: #00b43c
+           color: #fff
+         &.not-meet
+           background-color: #2b333b
 </style>
