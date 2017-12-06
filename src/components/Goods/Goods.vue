@@ -18,8 +18,17 @@
               <div class="content">
                 <div class="name">{{food.name}}</div>
                 <p class="desc">{{food.description}}</p>
-                <div><span class="sell-count">月售{{food.sellCount}}份</span><span class="rating">好评率{{food.rating}}%</span></div>
-                <div><span class="price">￥{{food.price}}</span><span class="old-price" v-if="!!food.oldPrice">￥{{food.oldPrice}}</span></div>
+                <div>
+                  <span class="sell-count">月售{{food.sellCount}}份</span>
+                  <span class="rating">好评率{{food.rating}}%</span>
+                </div>
+                <div>
+                  <span class="price">￥{{food.price}}</span>
+                  <span class="old-price" v-if="!!food.oldPrice">￥{{food.oldPrice}}</span>
+                </div>
+                <div class="control-wrapper">
+                  <cart-control></cart-control>
+                </div>
               </div>
             </li>
           </ul>
@@ -33,11 +42,13 @@
   import BetterScroll from 'better-scroll'
   import response from 'assets/data.json'
   import Shopcart from 'components/Shopcart/Shopcart'
-  
+  import CartControl from 'components/CartControl/CartControl'
+
   export default {
     name: 'Goods',
     components: {
       Shopcart,
+      CartControl,
     },
     props: {
       seller: {
@@ -171,6 +182,7 @@
           background-color: #f3f5f7
         .foods-item
           display: flex
+          position: relative
           margin: 0 18px
           padding: 18px 0
           border-1px(rgba(7,17,27,0.1))
@@ -215,4 +227,8 @@
               font-size: 10px
               font-weight: 700
               color: rgb(147,153,159)
+            .control-wrapper
+              position: absolute
+              bottom: 12px
+              right: 0
 </style>
