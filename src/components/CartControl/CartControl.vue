@@ -47,16 +47,17 @@
 <style type="text/css" lang="stylus" scoped>
   .control
     font-size: 0
-    background: #ccc
+    // background: #ccc
     .reduce, .add
       display: inline-block
+      vertical-align: middle
       padding: 6px
       font-size: 24px
       color: rgb(0, 160, 220)
     .count
+      // display: inline-block
       margin: 0 4px
-      // line-height: 24px
-      // vertical-align: middle
+      vertical-align: middle
       font-size: 12px
       color: rgb(147, 153, 159)
     .move-enter-active, .move-leave-active
