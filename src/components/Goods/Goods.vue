@@ -27,7 +27,8 @@
                   <span class="old-price" v-if="!!food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="control-wrapper">
-                  <cart-control></cart-control>
+                  <cart-control :food.sync="food"></cart-control>
+                  <!-- <div>{{food.count}}</div> -->
                 </div>
               </div>
             </li>
@@ -35,7 +36,7 @@
         </li>
       </ul>
     </div>
-    <shopcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
+    <shopcart :chosenFoods="chosenFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
   </div>
 </template>
 <script type="text/javascript">
@@ -61,7 +62,6 @@
         // currentIndex: 1,
         foodsListHeight: [],
         scrollY: 0,
-        chosenFoods: [],
       }
     },
     computed: {
@@ -77,6 +77,17 @@
           }
         }
         return 0
+      },
+      chosenFoods() {
+        const foods = []
+        this.goods.forEach((goodsItem) => {
+          goodsItem.foods.forEach((food) => {
+            if (food.count) {
+              foods.push(food)
+            }
+          })
+        })
+        return foods
       },
     },
     created() {
