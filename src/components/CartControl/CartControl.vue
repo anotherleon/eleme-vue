@@ -55,7 +55,6 @@
       font-size: 24px
       color: rgb(0, 160, 220)
     .count
-      // display: inline-block
       margin: 0 4px
       vertical-align: middle
       font-size: 12px
