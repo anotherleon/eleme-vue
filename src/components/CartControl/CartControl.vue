@@ -1,10 +1,23 @@
 <template>
   <div class="control">
     <transition name="move">
-      <span class="reduce icon-remove_circle_outline" v-show="food.count>0" @click="reduceCart"></span>
+      <span class="reduce icon-remove_circle_outline" v-show="food.count>0" @click="reduceFood"></span>
     </transition>
     <span class="count" v-show="food.count>0">{{food.count}}</span>
-    <span class="add icon-add_circle" @click="addCart"></span>
+    <span class="add icon-add_circle" @click="addFood"></span>
+    <span class="ball-container">
+      <template v-for="(ball,index) in balls">
+        <transition name="drop" 
+          v-on:before-enter="beforeEnter"
+          v-on:enter="enter"
+          v-on:after-enter="afterEnter"
+        >
+          <span class="ball" ref="ball" v-if="ball.show" :key="index">
+            <span class="inner"></span>
+          </span>  
+        </transition>
+      </template>
+    </span>
   </div>
 </template>
 <script>
@@ -18,34 +31,101 @@
         },
       },
     },
-    // computed: {
-
-    // },
+    data() {
+      return {
+        // count: 0,
+        balls: [{
+          show: false,
+          index: 1,
+        }, {
+          show: false,
+          index: 2,
+        }, {
+          show: false,
+          index: 3,
+        }, {
+          show: false,
+          index: 4,
+        }, {
+          show: false,
+          index: 5,
+        }],
+      }
+    },
     methods: {
-      addCart() {
+      /* 1.food传递的是对象的引用，子组件可以直接改变父组件的值，但不推荐这样做，应该用emit传递事件
+      * 2.vue官方推荐使用计算属性或者定义一个局部变量，并用 prop 的值初始化它，而不是直接更改prop
+      */
+      addFood(event) { // addFood更符合语义，用于food数量的增减
         // if (!event._contructed) {
         //   return
         // }
         // console.log('click')
         if (!this.food.count) {
           this.$set(this.food, 'count', 1)
-          console.log('====')
         } else {
+          console.log('++++++')
           this.food.count += 1
         }
-        this.$emit('update:food', this.food)
+        // this.count += 1
+        this.balls[this.balls.length - 1].show = true
+        console.log(this.balls[this.balls.length - 1].index)
+        this.$emit('update', event.target)
+        // this.dropBall()
       },
-      reduceCart() {
+      reduceFood(event) {
+        console.log('------')
         this.food.count -= 1
+        this.$emit('update', event.target) // 原版课程没有此句
         // if (this.food.count <= 0) {
         //   this.food.count = 0
         // }
+      },
+      dropBall(el) {
+        // const num = this.balls.length
+        // while (num) {
+        //   this.balls[num - 1].show = true
+        //   num -= 1
+        // }
+        // this.balls[num - 1].show = true
+
+        const rect = el.getBoundingClientRect()
+        const x = -(rect.left - 32)
+        const y = (window.innerHeight - rect.top - 22)
+        // el.style.display = ''
+        const ball = el
+        ball.style.webkitTransform = `translate(0, ${y}px)`
+        ball.style.transform = `translate(0, ${y}px)`
+        const inner = el.firstChild
+        inner.style.webkitTransform = `translate3d(${x}px,0,0)`
+        inner.style.transform = `translate3d(${x}px,0,0)`
+      },
+      beforeEnter(el) {
+        console.log('====================beforeEnter')
+        console.log(el)
+        // this.dropBall(el)
+      },
+      enter(el, done) {
+        console.log('==========enter')
+        console.log(el)
+        // this.dropBall(el)
+        done()
+      },
+      afterEnter(el) {
+        console.log('=========afterEnter')
+        this.dropBall(el)
+        // 把最后一个ball移除，并加入数组最前面
+        const ball = this.balls.pop()
+        ball.show = false
+        // el.style.display = "none"
+        this.balls.unshift(ball)
       },
     },
   }
 </script>
 <style type="text/css" lang="stylus" scoped>
   .control
+    position: relative
     font-size: 0
     // background: #ccc
     .reduce, .add
@@ -65,5 +145,24 @@
     .move-enter, .move-leave-to
       opacity: 0
       transform: translate(24px, 0)
+    .ball-container
+      position: absolute
+      z-index: 100
+      top: 10px
+      right: 10px
+      .ball
+        position: absolute
+        display: inline-block
+        transition: all 1.4s cubic-bezier(0.49, -0.29, 0.75, 0.41)
+        .inner
+          display: inline-block
+          width: 16px
+          height: 16px
+          border-radius: 50%
+          background-color: rgb(0, 160, 220)
+          transition: all 1.4s linear
+        // .drop-enter-to
+        //   transition: all .4s cubic-bezier(.51,-0.28,.83,.67)
+        //   transform: translate(-200px, 100px)
 </style>
 

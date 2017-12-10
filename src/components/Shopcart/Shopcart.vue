@@ -16,6 +16,15 @@
         <div class="pay" :class="[minPrice>totalPrice?'not-meet':'meet']">{{payDesc}}</div>
       </div>
     </div>
+    <div class="ball-container">
+      <template v-for="(ball,index) in balls">
+        <transition name="drop">
+          <div class="ball" ref="ball" v-if="ball.show" :key="index">
+            <span class="inner"></span>
+          </div>  
+        </transition>
+      </template>
+    </div>
   </div>
 </template>
 <script>
@@ -33,6 +42,9 @@
           ]
         },
       },
+      ballTarget: {
+        type: Object,
+      },
       deliveryPrice: {
         type: Number,
         default: 0,
@@ -41,6 +53,21 @@
         type: Number,
         default: 0,
       },
+    },
+    data() {
+      return {
+        balls: [{
+          show: false,
+        }, {
+          show: false,
+        }, {
+          show: false,
+        }, {
+          show: false,
+        }, {
+          show: false,
+        }],
+      }
     },
     computed: {
       totalPrice() {
@@ -63,6 +90,20 @@
         }
         const d = this.totalPrice - this.minPrice
         return (d >= 0 ? '去结算' : `还差￥${Math.abs(d)}元起送`)
+      },
+    },
+    watch: {
+      chosenFoods: {
+        handler() {
+          // console.log('5555555555555555')
+          this.dropBall(this.ballTarget)
+        },
+        deep: true,
+      },
+    },
+    methods: {
+      dropBall(el) {
+        console.log(el)
       },
     },
   }
@@ -153,4 +194,16 @@
            color: #fff
          &.not-meet
            background-color: #2b333b
+   .ball-container
+     .ball
+       position: fixed
+       bottom: 22px
+       left: 32px
+       z-index: 20
+       .inner
+         display: inline-block
+         width: 16px
+         height: 16px
+         border-radius: 50%
+         background-color: rgb(0, 160, 220)
 </style>

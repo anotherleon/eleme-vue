@@ -27,8 +27,7 @@
                   <span class="old-price" v-if="!!food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="control-wrapper">
-                  <cart-control :food.sync="food"></cart-control>
-                  <!-- <div>{{food.count}}</div> -->
+                  <cart-control :food="food" @update="updateShopcart"></cart-control>
                 </div>
               </div>
             </li>
@@ -36,7 +35,7 @@
         </li>
       </ul>
     </div>
-    <shopcart :chosenFoods="chosenFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
+    <shopcart ref="shopcart" :ball-target="ballTarget" :chosenFoods="chosenFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
   </div>
 </template>
 <script type="text/javascript">
@@ -62,6 +61,8 @@
         // currentIndex: 1,
         foodsListHeight: [],
         scrollY: 0,
+        // chosenFoods: [],
+        ballTarget: {},
       }
     },
     computed: {
@@ -141,6 +142,21 @@
         const el = menuList[index]
         this.menuScroll.scrollToElement(el, 300, 0, -200)
       },
+      updateShopcart(el) {
+        // const food = val.food
+        // if (!food.count) {
+        //   this.$set(food, 'count', val.count)
+        // } else {
+        //   food.count = val.count
+        // }
+        console.log('============更新购物车数量===========')
+        // console.log(el.getBoundingClientRect())
+        console.log(el)
+        // this.ballTarget = { el.getBoundingClientRect}
+      },
+      // dropBall(ball) {
+      //   this.$refs.shopcart.drop(ball)
+      // },
     },
   }
 </script>
