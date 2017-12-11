@@ -68,10 +68,9 @@
           this.food.count += 1
         }
         // this.count += 1
-        this.balls[this.balls.length - 1].show = true
-        console.log(this.balls[this.balls.length - 1].index)
         this.$emit('update', event.target)
-        // this.dropBall()
+        // this.balls[0].show = true
+        this.drop()
       },
       reduceFood(event) {
         console.log('------')
@@ -81,44 +80,54 @@
         //   this.food.count = 0
         // }
       },
+      drop() {
+        // this.$nextTick(() => {
+        for (let i = 0; i < this.balls.length; i += 1) {
+          const ball = this.balls[i]
+          if (!ball.show) {
+            ball.show = true
+            console.log('我是============' + ball.index)
+            return
+          }
+        }
+        // })
+      },
       dropBall(el) {
-        // const num = this.balls.length
-        // while (num) {
-        //   this.balls[num - 1].show = true
-        //   num -= 1
-        // }
-        // this.balls[num - 1].show = true
-
-        const rect = el.getBoundingClientRect()
-        const x = -(rect.left - 32)
-        const y = (window.innerHeight - rect.top - 22)
-        // el.style.display = ''
-        const ball = el
-        ball.style.webkitTransform = `translate(0, ${y}px)`
-        ball.style.transform = `translate(0, ${y}px)`
-        const inner = el.firstChild
-        inner.style.webkitTransform = `translate3d(${x}px,0,0)`
-        inner.style.transform = `translate3d(${x}px,0,0)`
+        let len = this.balls.length
+        while (len) {
+          const b = this.balls[len - 1]
+          if (b.show) {
+            console.log('111111111111111111111111111111')
+            const rect = el.getBoundingClientRect()
+            const x = -(rect.left - 32)
+            const y = (window.innerHeight - rect.top - 22)
+            // el.style.display = ''
+            const ball = el
+            ball.style.webkitTransform = `translate3d(0, ${y}px, 0)`
+            ball.style.transform = `translate3d(0, ${y}px, 0)`
+            const inner = el.firstChild
+            inner.style.webkitTransform = `translate3d(${x}px,0,0)`
+            inner.style.transform = `translate3d(${x}px,0,0)`
+          }
+          len -= 1
+        }
       },
       beforeEnter(el) {
         console.log('====================beforeEnter')
         console.log(el)
-        // this.dropBall(el)
       },
       enter(el, done) {
         console.log('==========enter')
         console.log(el)
-        // this.dropBall(el)
-        done()
-      },
-      afterEnter(el) {
-        console.log('=========afterEnter')
         this.dropBall(el)
-        // 把最后一个ball移除，并加入数组最前面
-        const ball = this.balls.pop()
+        // done()
+        el.addEventListener('transitionend', done)
+      },
+      afterEnter() {
+        console.log('=========afterEnter')
+        const ball = this.balls.shift()
         ball.show = false
-        // el.style.display = "none"
-        this.balls.unshift(ball)
+        this.balls.push(ball)
       },
     },
   }
@@ -151,16 +160,15 @@
       top: 10px
       right: 10px
       .ball
-        position: absolute
         display: inline-block
-        transition: all 1.4s cubic-bezier(0.49, -0.29, 0.75, 0.41)
+        transition: all 0.4s cubic-bezier(0.49, -0.29, 0.75, 0.41)
         .inner
           display: inline-block
           width: 16px
           height: 16px
           border-radius: 50%
           background-color: rgb(0, 160, 220)
-          transition: all 1.4s linear
+          transition: all 0.4s linear
         // .drop-enter-to
         //   transition: all .4s cubic-bezier(.51,-0.28,.83,.67)
         //   transform: translate(-200px, 100px)

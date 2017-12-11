@@ -142,7 +142,7 @@
         const el = menuList[index]
         this.menuScroll.scrollToElement(el, 300, 0, -200)
       },
-      updateShopcart(el) {
+      updateShopcart() {
         // const food = val.food
         // if (!food.count) {
         //   this.$set(food, 'count', val.count)
@@ -151,8 +151,7 @@
         // }
         console.log('============更新购物车数量===========')
         // console.log(el.getBoundingClientRect())
-        console.log(el)
-        // this.ballTarget = { el.getBoundingClientRect}
+        // console.log(el)
       },
       // dropBall(ball) {
       //   this.$refs.shopcart.drop(ball)
