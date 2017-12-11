@@ -86,7 +86,7 @@
           const ball = this.balls[i]
           if (!ball.show) {
             ball.show = true
-            console.log('我是============' + ball.index)
+            // console.log('============' + ball.index)
             return
           }
         }

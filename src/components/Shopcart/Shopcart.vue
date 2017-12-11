@@ -2,7 +2,7 @@
   <div class="shopcart">
     <div class="content">
       <div class="left">
-        <div class="icon-wrapper">
+        <div class="icon-wrapper" @click="toggleList">
           <span class="icon" :class="{'hightlight': totalCount>0}">
             <i class="icon-shopping_cart"></i>
           </span>
@@ -25,9 +25,32 @@
         </transition>
       </template>
     </div>
+    <transition name="fold">
+      <div class="shopcart-list" v-show="listShow">
+        <div class="list-header">
+          <h1 class="title">购物车</h1>
+          <span class="empty">清空</span>
+        </div>
+        <div class="list-content">
+          <ul>
+            <li v-for="food in chosenFoods">
+              <span class="name">food.name</span>
+              <div class="price">
+                <span>￥{{}}</span>
+              </div>
+              <div class="cartcontrol-wrapper">
+                
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 <script>
+  import CartControl from 'components/CartControl/CartControl'
+
   export default {
     name: 'Shopcart',
     props: {
@@ -54,6 +77,9 @@
         default: 0,
       },
     },
+    components: {
+      CartControl,
+    },
     data() {
       return {
         balls: [{
@@ -67,6 +93,7 @@
         }, {
           show: false,
         }],
+        fold: true,
       }
     },
     computed: {
@@ -91,6 +118,12 @@
         const d = this.totalPrice - this.minPrice
         return (d >= 0 ? '去结算' : `还差￥${Math.abs(d)}元起送`)
       },
+      listShow() {
+        if (this.totalCount > 0 && !this.fold) {
+          return true
+        }
+        return false
+      },
     },
     watch: {
       chosenFoods: {
@@ -104,6 +137,12 @@
     methods: {
       dropBall(el) {
         console.log(el)
+      },
+      toggleList() {
+        if (!this.totalCount) {
+          return
+        }
+        this.fold = !this.fold
       },
     },
   }
@@ -206,4 +245,28 @@
          height: 16px
          border-radius: 50%
          background-color: rgb(0, 160, 220)
+   .shopcart-list
+     position: absolute
+     left: 0
+     top: 0
+     z-index: -1
+     width: 100%
+     transform:translate3d(0,-100%,0)
+     &.fold-enter, &fold-leave-to
+       transform: translate3d(0, 0, 0)
+     &.fold-enter-active, &.fold-enter-leave
+       transition: all 1.4s ease
+       transform: translate3d(0, -100%, 0)
+     .list-header
+       height: 40px
+       line-height: 40px
+       padding: 0 18px
+       background-color: #f3f5f7
+       border-bottom: 1px solid rgba(7, 17, 27, 0.1)
+       .title
+         float: left
+         font-size: 14px
+       .empty
+         float: right
+         font-size: 12px
 </style>
