@@ -29,23 +29,24 @@
       <div class="shopcart-list" v-show="listShow">
         <div class="list-header">
           <h1 class="title">购物车</h1>
-          <span class="empty">清空</span>
+          <span class="empty" @click="empty">清空</span>
         </div>
         <div class="list-content">
           <ul>
-            <li v-for="food in chosenFoods">
-              <span class="name">food.name</span>
-              <div class="price">
-                <span>￥{{}}</span>
-              </div>
-              <div class="cartcontrol-wrapper">
-                
-              </div>
+            <li class="list-item border-1px" v-for="food in chosenFoods">
+              <span class="name">{{food.name}}</span>
+              <span class="price">
+                <span>￥{{food.price}}</span>
+              </span>
+              <span class="cartcontrol-wrapper">
+                <cart-control :food.sync="food"></cart-control>
+              </span>
             </li>
           </ul>
         </div>
       </div>
     </transition>
+    <div class="mask" v-show="listShow"></div>
   </div>
 </template>
 <script>
@@ -93,7 +94,7 @@
         }, {
           show: false,
         }],
-        fold: true,
+        fold: false,
       }
     },
     computed: {
@@ -125,36 +126,38 @@
         return false
       },
     },
-    watch: {
-      chosenFoods: {
-        handler() {
-          // console.log('5555555555555555')
-          this.dropBall(this.ballTarget)
-        },
-        deep: true,
-      },
-    },
     methods: {
       dropBall(el) {
         console.log(el)
       },
       toggleList() {
         if (!this.totalCount) {
+          this.fold = true
           return
         }
         this.fold = !this.fold
+      },
+      empty() {
+        this.chosenFoods.forEach((item) => {
+          item.count = 0
+        })
+        this.fold = true
       },
     },
   }
 </script>
 <style type="text/css" lang="stylus" scoped>
+  @import "../../assets/stylus/mixin.styl"
+  
   .shopcart
    position: fixed
    bottom: 0
    width: 100%
    height: 48px
+   z-index: 50
    .content
      display: flex
+     z-index: 40
      height: 100%
      color: rgba(255,255,255,0.4)
      background-color: #141d17
@@ -166,6 +169,7 @@
          display: inline-block
          position: relative
          top: -10px
+         z-index: 20
          margin: 0 12px
          padding: 6px
          width: 56px
@@ -249,14 +253,15 @@
      position: absolute
      left: 0
      top: 0
-     z-index: -1
+     z-index: 15
      width: 100%
+     background-color: #fff
      transform:translate3d(0,-100%,0)
-     &.fold-enter, &fold-leave-to
+     &.fold-enter, &.fold-leave-to
        transform: translate3d(0, 0, 0)
-     &.fold-enter-active, &.fold-enter-leave
-       transition: all 1.4s ease
-       transform: translate3d(0, -100%, 0)
+     &.fold-enter-active, &.fold-leave-active
+       transition: all .4s ease
+       // transform: translate3d(0, -100%, 0)
      .list-header
        height: 40px
        line-height: 40px
@@ -266,7 +271,40 @@
        .title
          float: left
          font-size: 14px
+         font-weight: 200
        .empty
          float: right
          font-size: 12px
+         color: rgb(0, 160, 220)
+     .list-content
+       .list-item
+         padding: 12px 0
+         margin: 0 18px
+         line-height: 24px
+         border-1px(rgba(7, 17, 27, 0.1))
+         .name
+           line-height: 14px
+           font-size: 14px
+           color: rgb(7, 17, 27)
+         .price
+           position: absolute
+           right: 90px
+           margin-right: 12px
+           font-size: 12px
+           font-weight: 700
+           color: rgb(240, 20 ,20)
+         .cartcontrol-wrapper
+           display: inline-block
+           position: absolute
+           right: 0
+           bottom: 6px
+   .mask
+     position: fixed
+     top: 0
+     left: 0
+     z-index: 10
+     width: 100%
+     height: 100%
+     backdrop-filter: blur(10px)
+     background-color: rgba(7, 17, 27, 0.6)
 </style>
