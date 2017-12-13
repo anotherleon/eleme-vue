@@ -1,54 +1,60 @@
 <template>
-  <div class="goods">
-    <div class="menu-wrapper" ref="menu">
-      <ul>
-        <li class="menu-item" :class="{current: currentIndex === index}" v-for="(item,index) in goods" 
-        @click="chooseMenu(index)" ref="menuList">
-          <span class="text border-1px">{{item.name}}</span>
-        </li>
-      </ul>
+  <div>
+    <div class="goods">
+     <div class="menu-wrapper" ref="menu">
+       <ul>
+         <li class="menu-item" :class="{current: currentIndex === index}" v-for="(item,index) in goods" 
+         @click="chooseMenu(index)" ref="menuList">
+           <span class="text border-1px">{{item.name}}</span>
+         </li>
+       </ul>
+     </div>
+     <div class="foods-wrapper" ref="foods">
+       <ul>
+         <li class="foods-list" v-for="(item,index) in goods" :key="index" ref="foodsList">
+           <h2 class="title">{{item.name}}</h2>
+           <ul>
+             <li class="foods-item border-1px" v-for="(food,index) in item.foods" @click="selectFood(food)" :key="index">
+               <img :src="food.icon" class="photo">
+               <div class="content">
+                 <div class="name">{{food.name}}</div>
+                 <p class="desc">{{food.description}}</p>
+                 <div>
+                   <span class="sell-count">月售{{food.sellCount}}份</span>
+                   <span class="rating">好评率{{food.rating}}%</span>
+                 </div>
+                 <div>
+                   <span class="price">￥{{food.price}}</span>
+                   <span class="old-price" v-if="!!food.oldPrice">￥{{food.oldPrice}}</span>
+                 </div>
+                 <div class="control-wrapper">
+                   <cart-control :food="food" @update="updateShopcart"></cart-control>
+                 </div>
+               </div>
+             </li>
+           </ul>
+         </li>
+       </ul>
+     </div>
+     <shopcart ref="shopcart" :ball-target="ballTarget" :chosenFoods="chosenFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
     </div>
-    <div class="foods-wrapper" ref="foods">
-      <ul>
-        <li class="foods-list" v-for="(item,index) in goods" :key="index" ref="foodsList">
-          <h2 class="title">{{item.name}}</h2>
-          <ul>
-            <li class="foods-item border-1px" v-for="(food,index) in item.foods" :key="index">
-              <img :src="food.icon" class="photo">
-              <div class="content">
-                <div class="name">{{food.name}}</div>
-                <p class="desc">{{food.description}}</p>
-                <div>
-                  <span class="sell-count">月售{{food.sellCount}}份</span>
-                  <span class="rating">好评率{{food.rating}}%</span>
-                </div>
-                <div>
-                  <span class="price">￥{{food.price}}</span>
-                  <span class="old-price" v-if="!!food.oldPrice">￥{{food.oldPrice}}</span>
-                </div>
-                <div class="control-wrapper">
-                  <cart-control :food="food" @update="updateShopcart"></cart-control>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <shopcart ref="shopcart" :ball-target="ballTarget" :chosenFoods="chosenFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
+    <food :food="selectedFood"></food> 
   </div>
+
 </template>
 <script type="text/javascript">
   import BetterScroll from 'better-scroll'
   import response from 'assets/data.json'
   import Shopcart from 'components/Shopcart/Shopcart'
   import CartControl from 'components/CartControl/CartControl'
+  import Food from 'components/Food/Food'
 
   export default {
     name: 'Goods',
     components: {
       Shopcart,
       CartControl,
+      Food,
     },
     props: {
       seller: {
@@ -63,6 +69,7 @@
         scrollY: 0,
         // chosenFoods: [],
         ballTarget: {},
+        selectedFood: {},
       }
     },
     computed: {
@@ -156,6 +163,10 @@
       // dropBall(ball) {
       //   this.$refs.shopcart.drop(ball)
       // },
+      selectFood(food) {
+        this.selectedFood = food
+        console.log('==============')
+      },
     },
   }
 </script>
@@ -169,7 +180,7 @@
     bottom: 46px
     width: 100%
     overflow: hidden
-    z-index: 10
+    // z-index: 10
     .menu-wrapper
       flex: 0 0 80px
       width: 80px
