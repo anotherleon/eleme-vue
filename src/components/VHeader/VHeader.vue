@@ -228,58 +228,58 @@
           margin-top: 64px
           padding-bottom: 64px
           width: 80%
-        .title
-          margin-bottom: 16px
-          font-size:16px
-          font-weight: bold
-          text-align: center
-        .rating
-          margin: 18px
-          padding: 2px 0
-          text-align: center
-        .support-title,.bulletin-title
-          display: flex
-          margin: 28px 0 24px 0;
-          text-align: center
-          .line
-            flex: 1
-            position: relative
-            top: -8px
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2)
-          .text
-            margin: 0 10px
-            font-size: 16px
+          .title
+            margin-bottom: 16px
+            font-size:16px
             font-weight: bold
-        .supports
-          margin: 0 12px
-           // line-height: 20px
-           font-size: 0
-          .type
-            display: inline-block
-            vertical-align: middle
-            margin: 6px 0
-            width: 16px
-            height: 16px
-            margin-right: 6px
-            background-size: 16px 16px
-            &.decrease
-              bg-image(decrease_2)
-            &.discount
-              bg-image(discount_2)
-            &.special
-              bg-image(special_2)
-            &.invoice
-              bg-image(invoice_2)
-            &.guarantee
-              bg-image(guarantee_2)
-          .desc
-            display: inline-block
-            vertical-align: middle
+            text-align: center
+          .rating
+            margin: 18px
+            padding: 2px 0
+            text-align: center
+          .support-title,.bulletin-title
+            display: flex
+            margin: 28px 0 24px 0;
+            text-align: center
+            .line
+              flex: 1
+              position: relative
+              top: -8px
+              border-bottom: 1px solid rgba(255, 255, 255, 0.2)
+            .text
+              margin: 0 10px
+              font-size: 16px
+              font-weight: bold
+          .supports
+            margin: 0 12px
+             // line-height: 20px
+             font-size: 0
+            .type
+              display: inline-block
+              vertical-align: middle
+              margin: 6px 0
+              width: 16px
+              height: 16px
+              margin-right: 6px
+              background-size: 16px 16px
+              &.decrease
+                bg-image(decrease_2)
+              &.discount
+                bg-image(discount_2)
+              &.special
+                bg-image(special_2)
+              &.invoice
+                bg-image(invoice_2)
+              &.guarantee
+                bg-image(guarantee_2)
+            .desc
+              display: inline-block
+              vertical-align: middle
+              font-size: 12px
+          .bulletin
+            margin: 0 12px
+            line-height: 24px
             font-size: 12px
-        .bulletin
-          margin: 0 12px
-          line-height: 24px
-          font-size: 12px
       .detail-close
         position: relative
         width: 32px

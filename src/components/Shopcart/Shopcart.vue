@@ -13,7 +13,7 @@
         <span class="delivery">另需配送费{{deliveryPrice}}元</span> 
       </div>
       <div class="right">
-        <div class="pay" :class="[minPrice>totalPrice?'not-meet':'meet']">{{payDesc}}</div>
+        <div class="pay" :class="[minPrice>totalPrice?'not-meet':'meet']" @click="pay">{{payDesc}}</div>
       </div>
     </div>
     <div class="ball-container">
@@ -31,7 +31,7 @@
           <h1 class="title">购物车</h1>
           <span class="empty" @click="empty">清空</span>
         </div>
-        <div class="list-content">
+        <div class="list-content" ref="listContent">
           <ul>
             <li class="list-item border-1px" v-for="food in chosenFoods">
               <span class="name">{{food.name}}</span>
@@ -46,11 +46,12 @@
         </div>
       </div>
     </transition>
-    <div class="mask" v-show="listShow"></div>
+    <div class="mask" v-show="listShow" @click="hideList"></div>
   </div>
 </template>
 <script>
   import CartControl from 'components/CartControl/CartControl'
+  import BetterScroll from 'better-scroll'
 
   export default {
     name: 'Shopcart',
@@ -94,7 +95,7 @@
         }, {
           show: false,
         }],
-        fold: false,
+        fold: true,
       }
     },
     computed: {
@@ -121,8 +122,16 @@
       },
       listShow() {
         if (this.totalCount > 0 && !this.fold) {
+          this.$nextTick(() => {
+            if (!this.listScroll) {
+              this.listScroll = new BetterScroll(this.$refs.listContent, { click: true })
+            } else {
+              this.listScroll.refresh()
+            }
+          })
           return true
         }
+        this.fold = true
         return false
       },
     },
@@ -139,9 +148,20 @@
       },
       empty() {
         this.chosenFoods.forEach((item) => {
-          item.count = 0
+          const food = item
+          food.count = 0
         })
         this.fold = true
+      },
+      hideList() {
+        this.fold = true
+      },
+      pay() {
+        if (this.totalPrice < this.minPrice) {
+          return
+        }
+        // eslint-disable-next-line
+        window.alert(`支付${this.totalPrice}`)
       },
     },
   }
@@ -152,12 +172,11 @@
   .shopcart
    position: fixed
    bottom: 0
+   z-index: 50
    width: 100%
    height: 48px
-   z-index: 50
    .content
      display: flex
-     z-index: 40
      height: 100%
      color: rgba(255,255,255,0.4)
      background-color: #141d17
@@ -169,7 +188,6 @@
          display: inline-block
          position: relative
          top: -10px
-         z-index: 20
          margin: 0 12px
          padding: 6px
          width: 56px
@@ -242,7 +260,7 @@
        position: fixed
        bottom: 22px
        left: 32px
-       z-index: 20
+       z-index: 100
        .inner
          display: inline-block
          width: 16px
@@ -253,7 +271,7 @@
      position: absolute
      left: 0
      top: 0
-     z-index: 15
+     z-index: -1
      width: 100%
      background-color: #fff
      transform:translate3d(0,-100%,0)
@@ -277,9 +295,11 @@
          font-size: 12px
          color: rgb(0, 160, 220)
      .list-content
+       padding: 0 18px
+       max-height: 217px
+       overflow: hidden
        .list-item
          padding: 12px 0
-         margin: 0 18px
          line-height: 24px
          border-1px(rgba(7, 17, 27, 0.1))
          .name
@@ -302,7 +322,7 @@
      position: fixed
      top: 0
      left: 0
-     z-index: 10
+     z-index: -10
      width: 100%
      height: 100%
      backdrop-filter: blur(10px)
