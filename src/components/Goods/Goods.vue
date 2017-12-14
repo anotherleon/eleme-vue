@@ -38,7 +38,7 @@
      </div>
      <shopcart ref="shopcart" :ball-target="ballTarget" :chosenFoods="chosenFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
     </div>
-    <food :food="selectedFood"></food> 
+    <food :food="selectedFood" :show="showDetail"></food> 
   </div>
 
 </template>
@@ -70,6 +70,7 @@
         // chosenFoods: [],
         ballTarget: {},
         selectedFood: {},
+        showDetail: false,
       }
     },
     computed: {
@@ -113,7 +114,7 @@
     // },
     methods: {
       init() {
-        console.log('================')
+        // console.log('================')
         this.foodsScroll = new BetterScroll(this.$refs.foods, { click: true, probeType: 3 })
         this.menuScroll = new BetterScroll(this.$refs.menu, { click: true })
         this.foodsScroll.on('scroll', (pos) => {
@@ -164,7 +165,11 @@
       //   this.$refs.shopcart.drop(ball)
       // },
       selectFood(food) {
+        this.showDetail = true
         this.selectedFood = food
+        // this.$nextTick(() => {
+        //   this.foodScroll = new BetterScroll(this.$refs.food, { click: true })
+        // })
         console.log('==============')
       },
     },
