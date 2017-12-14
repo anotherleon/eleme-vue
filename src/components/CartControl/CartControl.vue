@@ -1,10 +1,10 @@
 <template>
   <div class="control">
     <transition name="move">
-      <span class="reduce icon-remove_circle_outline" v-show="food.count>0" @click="reduceFood"></span>
+      <span class="reduce icon-remove_circle_outline" v-show="food.count>0" @click.stop="reduceFood"></span>
     </transition>
     <span class="count" v-show="food.count>0">{{food.count}}</span>
-    <span class="add icon-add_circle" @click="addFood"></span>
+    <span class="add icon-add_circle" @click.stop="addFood"></span>
     <span class="ball-container">
       <template v-for="(ball,index) in balls">
         <transition name="drop" 

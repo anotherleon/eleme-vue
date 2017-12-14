@@ -23,12 +23,17 @@
       <split></split>
       <div class="rating">
         <h2 class="title">商品评价</h2>
+        <rating-select></rating-select> 
         <div class="rating-content">
           <ul>
             <li class="rating-item" v-for="rating in food.ratings">
-              <span class="time"></span> <span class="user"></span>
+              <span class="time">{{rating.rateTime}}</span> 
+              <div class="user">
+                <span class="name">{{rating.username}}</span>
+                <img class="avatar" :src="rating.avatar" width="12" height="12">
+              </div>
               <p class="content">
-                <span class="icon"></span><span class="text"></span>
+                <i class="icon-thumb_up"></i><i class="icon-thumb_down"></i><span class="icon"></span><span class="text">{{rating.text}}</span>
               </p>
             </li>
           </ul>
@@ -38,13 +43,15 @@
   </div>
 </template>
 <script>
-  import Split from 'components/Split/Split'
   import BetterScroll from 'better-scroll'
+  import Split from 'components/Split/Split'
+  import RatingSelect from 'components/RatingSelect/RatingSelect'
 
   export default {
     name: 'Food',
     components: {
       Split,
+      RatingSelect,
     },
     props: {
       food: {
@@ -60,20 +67,27 @@
         showDetail: false,
       }
     },
-    updated() {
-      console.log('--------------------------------')
+    beforeUpdate() {
       this.$nextTick(() => {
-        this.foodScroll = new BetterScroll(this.$refs.food, { click: true })
+        if (!this.foodScroll) {
+          console.log('--------------------------------')
+          this.foodScroll = new BetterScroll(this.$refs.food, { click: true })
+        } else {
+          this.foodScroll.refresh()
+        }
       })
     },
     methods: {
       hide() {
-        this.show = false
+        // this.show = false
+        this.$emit('hide')
       },
     },
   }
 </script>
 <style type="text/css" lang="stylus" scoped>
+  @import "../../assets/stylus/mixin.styl"
+
   .food
     position: fixed
     top: 0
@@ -153,6 +167,32 @@
           line-height: 24px
           font-size: 12px
           color: rgb(77, 85, 93)
+      .rating
+        padding-top: 18px 
+        .title
+          margin-left: 18px
+          margin-bottom: 6px
+          font-size: 14px
+          line-height: 14px
+        .rating-content
+          padding: 0 18px
+          .rating-item
+            // margin: 0 18px
+            padding: 16px 0
+            border-1px(rgba(7, 17, 27, 0.1))
+            .time
+              line-height: 12px
+              font-size: 10px
+              color: rgb(147, 153, 159)
+            .user
+              position: absolute
+              top: 16px
+              right: 0
+            .text
+              line-height: 16px
+              font-size: 12px
+              color: rgb(7, 17, 27)
+            
             
 </style>
 

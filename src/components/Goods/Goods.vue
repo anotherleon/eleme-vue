@@ -38,7 +38,7 @@
      </div>
      <shopcart ref="shopcart" :ball-target="ballTarget" :chosenFoods="chosenFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
     </div>
-    <food :food="selectedFood" :show="showDetail"></food> 
+    <food :food="selectedFood" :show="showDetail" @hide="hideDetail"></food> 
   </div>
 
 </template>
@@ -171,6 +171,9 @@
         //   this.foodScroll = new BetterScroll(this.$refs.food, { click: true })
         // })
         console.log('==============')
+      },
+      hideDetail() {
+        this.showDetail = false
       },
     },
   }
