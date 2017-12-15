@@ -28,7 +28,8 @@
                    <span class="old-price" v-if="!!food.oldPrice">￥{{food.oldPrice}}</span>
                  </div>
                  <div class="control-wrapper">
-                   <cart-control :food="food" @update="updateShopcart"></cart-control>
+                  <!-- <cart-control :food="food" @update="updateShopcart"></cart-control> -->
+                   <cart-control :food.sync="food"></cart-control>
                  </div>
                </div>
              </li>
@@ -38,7 +39,7 @@
      </div>
      <shopcart ref="shopcart" :ball-target="ballTarget" :chosenFoods="chosenFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
     </div>
-    <food :food="selectedFood" :show="showDetail" @hide="hideDetail"></food> 
+    <food :food.sync="selectedFood" :show="showDetail" @hide="hideDetail"></food> 
   </div>
 
 </template>
@@ -93,6 +94,7 @@
           goodsItem.foods.forEach((food) => {
             if (food.count) {
               foods.push(food)
+              console.log('============更新购物车数量===========')
             }
           })
         })
@@ -150,17 +152,17 @@
         const el = menuList[index]
         this.menuScroll.scrollToElement(el, 300, 0, -200)
       },
-      updateShopcart() {
-        // const food = val.food
-        // if (!food.count) {
-        //   this.$set(food, 'count', val.count)
-        // } else {
-        //   food.count = val.count
-        // }
-        console.log('============更新购物车数量===========')
-        // console.log(el.getBoundingClientRect())
-        // console.log(el)
-      },
+      // updateShopcart() {
+      //   // const food = val.food
+      //   // if (!food.count) {
+      //   //   this.$set(food, 'count', val.count)
+      //   // } else {
+      //   //   food.count = val.count
+      //   // }
+      //   console.log('============更新购物车数量===========')
+      //   // console.log(el.getBoundingClientRect())
+      //   // console.log(el)
+      // },
       // dropBall(ball) {
       //   this.$refs.shopcart.drop(ball)
       // },

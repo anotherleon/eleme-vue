@@ -56,7 +56,7 @@
       /* 1.food传递的是对象的引用，子组件可以直接改变父组件的值，但不推荐这样做，应该用emit传递事件
       * 2.vue官方推荐使用计算属性或者定义一个局部变量，并用 prop 的值初始化它，而不是直接更改prop
       */
-      addFood(event) { // addFood更符合语义，用于food数量的增减
+      addFood() { // addFood更符合语义，用于food数量的增减
         // if (!event._contructed) {
         //   return
         // }
@@ -68,14 +68,14 @@
           this.food.count += 1
         }
         // this.count += 1
-        this.$emit('update', event.target)
+        this.$emit('updateupdate:food', this.food)
         // this.balls[0].show = true
         this.drop()
       },
-      reduceFood(event) {
+      reduceFood() {
         console.log('------')
         this.food.count -= 1
-        this.$emit('update', event.target) // 原版课程没有此句
+        this.$emit('update:food', this.food) // 原版课程没有此句
         // if (this.food.count <= 0) {
         //   this.food.count = 0
         // }
@@ -97,7 +97,7 @@
         while (len) {
           const b = this.balls[len - 1]
           if (b.show) {
-            console.log('111111111111111111111111111111')
+            // console.log('111111111111111111111111111111')
             const rect = el.getBoundingClientRect()
             const x = -(rect.left - 32)
             const y = (window.innerHeight - rect.top - 22)

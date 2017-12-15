@@ -1,51 +1,58 @@
 <template>
-  <div class="food" v-show="show" ref="food">
-    <div class="content-wrapper">
-      <div class="image-header">
-        <div class="back" @click="hide"> <i class="icon-arrow_lift"></i> </div>
-        <img :src="food.image" alt="">
-      </div>
-      <div class="content">
-        <h1 class="title">{{food.name}}</h1>
-        <div class="detail">
-          <span class="sell-count">月售{{food.sellCount}}份</span><span class="rating">好评率{{food.rating}}%</span>
+  <transition name="move">
+    <div class="food" v-show="show" ref="food">
+      <div class="content-wrapper">
+        <div class="image-header">
+          <div class="back" @click="hide"> <i class="icon-arrow_lift"></i> </div>
+          <img :src="food.image" alt="">
         </div>
-        <div class="price">
-          <span class="now">￥{{food.price}}</span><span class="old">{{food.oldPrice}}</span>
-        </div>
-        <div class="add-cart">加入购物车</div>
-      </div> 
-      <split></split>
-      <div class="info">
-        <h2 class="title">商品介绍</h2>
-        <p class="text">{{food.info}}</p>
-      </div> 
-      <split></split>
-      <div class="rating">
-        <h2 class="title">商品评价</h2>
-        <rating-select></rating-select> 
-        <div class="rating-content">
-          <ul>
-            <li class="rating-item" v-for="rating in food.ratings">
-              <span class="time">{{rating.rateTime}}</span> 
-              <div class="user">
-                <span class="name">{{rating.username}}</span>
-                <img class="avatar" :src="rating.avatar" width="12" height="12">
-              </div>
-              <p class="content">
-                <i class="icon-thumb_up"></i><i class="icon-thumb_down"></i><span class="icon"></span><span class="text">{{rating.text}}</span>
-              </p>
-            </li>
-          </ul>
+        <div class="content">
+          <h1 class="title">{{food.name}}</h1>
+          <div class="detail">
+            <span class="sell-count">月售{{food.sellCount}}份</span><span class="rating">好评率{{food.rating}}%</span>
+          </div>
+          <div class="price">
+            <span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">{{food.oldPrice}}</span>
+          </div>
+          <div class="add-cart" @click="addFood">
+            <span>加入购物车<span class="count" v-show="food.count">({{food.count}})</span></span>
+          </div>
+        </div> 
+        <split v-show="food.info"></split>
+        <div class="info" v-show="food.info">
+          <h2 class="title">商品介绍</h2>
+          <p class="text">{{food.info}}</p>
+        </div> 
+        <split></split>
+        <div class="rating">
+          <h2 class="title">商品评价</h2>
+          <rating-select :ratings="food.ratings" :desc="desc" :hasContent="hasContent" @select="selectRating" @toggle="toggleContent"></rating-select> 
+          <div class="rating-content">
+            <ul v-show="food.ratings && food.ratings.length">
+              <li class="rating-item border-1px" v-show="showRating(rating.rateType, rating.text)" v-for="rating in food.ratings">
+                <span class="time">{{rating.rateTime | formatDate}}</span> 
+                <span class="user">
+                  <span class="name">{{rating.username}}</span>
+                  <img class="avatar" :src="rating.avatar" width="12" height="12">
+                </span>
+                <p class="content">
+                  <i class="icon-thumb_up" :class="{'icon-thumb_up':rating.rateType===0, 'icon-thumb_down':rating.rateType===1}"></i>
+                  {{rating.text}}
+                </p>
+              </li>
+            </ul>
+            <div class="no-rating" v-show="!food.ratings || !food.ratings.length">暂无评价</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 <script>
   import BetterScroll from 'better-scroll'
   import Split from 'components/Split/Split'
   import RatingSelect from 'components/RatingSelect/RatingSelect'
+  import FormatDate from 'common/js/date'
 
   export default {
     name: 'Food',
@@ -65,12 +72,26 @@
     data() {
       return {
         showDetail: false,
+        rateType: 2,
+        desc: {
+          all: '全部',
+          like: '推荐',
+          dislike: '吐槽',
+        },
+        hasContent: false,
+        showAdd: false,
       }
     },
-    beforeUpdate() {
+    filters: {
+      formatDate(time) {
+        const date = new Date(time)
+        return FormatDate(date, 'yyyy-MM-dd hh:mm')
+      },
+    },
+    mounted() {
       this.$nextTick(() => {
         if (!this.foodScroll) {
-          console.log('--------------------------------')
+          // console.log('--------------------------------')
           this.foodScroll = new BetterScroll(this.$refs.food, { click: true })
         } else {
           this.foodScroll.refresh()
@@ -80,7 +101,43 @@
     methods: {
       hide() {
         // this.show = false
+        this.hasContent = false
         this.$emit('hide')
+      },
+      addFood() {
+        if (!this.food.count) {
+          this.$set(this.food, 'count', 1)
+        } else {
+          console.log('++++++')
+          this.food.count += 1
+        }
+        this.showAdd = true
+        this.$emit('update:food', this.food)
+        this.showAdd = false
+      },
+      selectRating(type) {
+        this.rateType = type
+        this.$nextTick(() => {
+          this.foodScroll.refresh()
+        })
+      },
+      showRating(rateType, text) {
+        if (this.hasContent) {
+          if (this.rateType === 2) {
+            return true && !!text
+          }
+          return (this.rateType === rateType) && !!text
+        }
+        if (this.rateType === 2) {
+          return true
+        }
+        return this.rateType === rateType
+      },
+      toggleContent() {
+        this.hasContent = !this.hasContent
+        this.$nextTick(() => {
+          this.foodScroll.refresh()
+        })
       },
     },
   }
@@ -95,7 +152,6 @@
     bottom: 48px
     z-index: 30
     width: 100%
-    height: 100%
     background: #fff
     .content-wrapper
       .image-header
@@ -148,7 +204,7 @@
           bottom: 0
           right: 0
           padding: 6px 12px
-          width: 72px
+          width: 84px
           height: 24px
           line-height: 24px
           text-align: center
@@ -181,6 +237,7 @@
             padding: 16px 0
             border-1px(rgba(7, 17, 27, 0.1))
             .time
+              margin-bottom: 6px
               line-height: 12px
               font-size: 10px
               color: rgb(147, 153, 159)
@@ -188,11 +245,23 @@
               position: absolute
               top: 16px
               right: 0
-            .text
+            .content
               line-height: 16px
               font-size: 12px
               color: rgb(7, 17, 27)
-            
-            
+              .icon-thumb_up, icon-thumb_down
+                margin-right: 4px
+              .icon-thumb_up
+                color: rgb(0, 160, 220)
+              .icon-thumb_down
+                color: rgb(147, 153, 159)
+          .no-rating
+            padding: 16px 0
+            font-size: 12px
+            color: rgb(147, 153, 159)
+  .move-enter-active, .move-leave-active
+    transition: all .4s ease
+  .move-enter, .move-leave-to
+    transform: translate(100%, 0)
 </style>
 
