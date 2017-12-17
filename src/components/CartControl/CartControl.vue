@@ -1,10 +1,10 @@
 <template>
   <div class="control">
     <transition name="move">
-      <span class="reduce icon-remove_circle_outline" v-show="food.count>0" @click.stop="reduceFood"></span>
+      <span class="reduce icon-remove_circle_outline" v-show="food.count>0" @click.stop.prevent="reduceFood"></span>
     </transition>
     <span class="count" v-show="food.count>0">{{food.count}}</span>
-    <span class="add icon-add_circle" @click.stop="addFood"></span>
+    <span class="add icon-add_circle" @click.stop.prevent="addFood"></span>
     <span class="ball-container">
       <template v-for="(ball,index) in balls">
         <transition name="drop" 
@@ -56,11 +56,12 @@
       /* 1.food传递的是对象的引用，子组件可以直接改变父组件的值，但不推荐这样做，应该用emit传递事件
       * 2.vue官方推荐使用计算属性或者定义一个局部变量，并用 prop 的值初始化它，而不是直接更改prop
       */
-      addFood() { // addFood更符合语义，用于food数量的增减
-        // if (!event._contructed) {
-        //   return
-        // }
-        // console.log('click')
+      addFood(event) { // addFood更符合语义，用于food数量的增减
+        // eslint-disable-next-line
+        if (!event._constructed) {
+          return
+        }
+        console.log('click')
         if (!this.food.count) {
           this.$set(this.food, 'count', 1)
         } else {
@@ -72,7 +73,11 @@
         // this.balls[0].show = true
         this.drop()
       },
-      reduceFood() {
+      reduceFood(event) {
+        // eslint-disable-next-line
+        if (!event._constructed) {
+          return
+        }
         console.log('------')
         this.food.count -= 1
         this.$emit('update:food', this.food) // 原版课程没有此句

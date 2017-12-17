@@ -14,9 +14,14 @@
           <div class="price">
             <span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">{{food.oldPrice}}</span>
           </div>
-          <div class="add-cart" @click="addFood">
-            <span>加入购物车<span class="count" v-show="food.count">({{food.count}})</span></span>
+          <div class="control-wrapper">
+            <cart-control :food.sync="food"></cart-control>
           </div>
+          <transition name="fade">
+            <div class="add-cart" @click="addFood" v-show="!food.count || food.count===0">
+              <span>加入购物车<span class="count" v-show="food.count">({{food.count}})</span></span>
+            </div>
+          </transition>
         </div> 
         <split v-show="food.info"></split>
         <div class="info" v-show="food.info">
@@ -37,7 +42,7 @@
                 </span>
                 <p class="content">
                   <i class="icon-thumb_up" :class="{'icon-thumb_up':rating.rateType===0, 'icon-thumb_down':rating.rateType===1}"></i>
-                  {{rating.text}}
+                  <span>{{rating.text}}</span>
                 </p>
               </li>
             </ul>
@@ -53,12 +58,14 @@
   import Split from 'components/Split/Split'
   import RatingSelect from 'components/RatingSelect/RatingSelect'
   import FormatDate from 'common/js/date'
+  import CartControl from 'components/CartControl/CartControl'
 
   export default {
     name: 'Food',
     components: {
       Split,
       RatingSelect,
+      CartControl,
     },
     props: {
       food: {
@@ -79,7 +86,6 @@
           dislike: '吐槽',
         },
         hasContent: false,
-        showAdd: false,
       }
     },
     filters: {
@@ -91,12 +97,17 @@
     mounted() {
       this.$nextTick(() => {
         if (!this.foodScroll) {
-          // console.log('--------------------------------')
+          console.log('-------------food mounted-------------------')
           this.foodScroll = new BetterScroll(this.$refs.food, { click: true })
         } else {
+          console.log('xxxxxxxxxxxxxxxxxx')
           this.foodScroll.refresh()
         }
       })
+    },
+    updated() {
+      console.log('=======food update==========')
+      // this.foodScroll.refresh()
     },
     methods: {
       hide() {
@@ -108,25 +119,26 @@
         if (!this.food.count) {
           this.$set(this.food, 'count', 1)
         } else {
-          console.log('++++++')
+          console.log('+++addfood+++')
           this.food.count += 1
         }
-        this.showAdd = true
         this.$emit('update:food', this.food)
-        this.showAdd = false
       },
       selectRating(type) {
         this.rateType = type
-        this.$nextTick(() => {
-          this.foodScroll.refresh()
-        })
+        // this.$nextTick(() => {
+        //   this.foodScroll.refresh()
+        // })
       },
       showRating(rateType, text) {
-        if (this.hasContent) {
-          if (this.rateType === 2) {
-            return true && !!text
-          }
-          return (this.rateType === rateType) && !!text
+        // if (this.hasContent) {
+        //   if (this.rateType === 2) {
+        //     return true && !!text
+        //   }
+        //   return (this.rateType === rateType) && !!text
+        // }
+        if (this.hasContent && !text) {
+          return false
         }
         if (this.rateType === 2) {
           return true
@@ -135,9 +147,9 @@
       },
       toggleContent() {
         this.hasContent = !this.hasContent
-        this.$nextTick(() => {
-          this.foodScroll.refresh()
-        })
+        // this.$nextTick(() => {
+        //   this.foodScroll.refresh()
+        // })
       },
     },
   }
@@ -199,6 +211,10 @@
             text-decoration: line-through
             font-size: 10px
             color: rgb(147, 153, 159)
+        .control-wrapper
+          position:absolute
+          bottom: 0px
+          right: 0px
         .add-cart
           position: absolute
           bottom: 0
@@ -212,6 +228,10 @@
           color: #fff
           border-radius: 24px
           background-color: rgb(0, 160, 220)
+          &.fade-enter,&.fade-leave-to
+            opacity:0
+          &.fade-enter-active,&.fade-leave-active
+            transition: all .4s ease
       .info
         padding: 18px
         .title
@@ -250,7 +270,9 @@
               font-size: 12px
               color: rgb(7, 17, 27)
               .icon-thumb_up, icon-thumb_down
+                // line-height: 16px
                 margin-right: 4px
+                vertical-align:middle
               .icon-thumb_up
                 color: rgb(0, 160, 220)
               .icon-thumb_down

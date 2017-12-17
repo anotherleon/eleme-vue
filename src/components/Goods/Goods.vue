@@ -172,7 +172,7 @@
         // this.$nextTick(() => {
         //   this.foodScroll = new BetterScroll(this.$refs.food, { click: true })
         // })
-        console.log('==============')
+        console.log('========select food======')
       },
       hideDetail() {
         this.showDetail = false
