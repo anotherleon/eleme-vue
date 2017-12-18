@@ -37,7 +37,7 @@
          </li>
        </ul>
      </div>
-     <shopcart ref="shopcart" :ball-target="ballTarget" :chosenFoods="chosenFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
+     <shopcart ref="shopcart" :chosenFoods="chosenFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
     </div>
     <food :food.sync="selectedFood" :show="showDetail" @hide="hideDetail"></food> 
   </div>
@@ -69,7 +69,7 @@
         foodsListHeight: [],
         scrollY: 0,
         // chosenFoods: [],
-        ballTarget: {},
+        // ballTarget: {},
         selectedFood: {},
         showDetail: false,
       }

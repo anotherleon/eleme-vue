@@ -27,3 +27,12 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
  + 因此更好的做法是this.$emit('add')、this.$emit('reduce')事件，Good组件监听到add、reduce后，调用addFood,和reduceFood方法，
  + 这样还有一个好处就是，在别的页面，如Food详情页中，点击添加购物车后发送一个add事件给Good就可以实现food.count的增加，而不用在Food也添加一个addFood方法了
  + 另外小球也可以做成一个组件，直接在CartControl、Food的购物车中复用
+
+ 2. 布局
+  flex ：左边固定，右边适应 图片 + 文字
+  div 左右。。。。
+
+ 圆形图片 border-radius: 50%
+
+常用颜色
+ color: rgb(147, 153, 159)
