@@ -195,7 +195,7 @@
          box-sizing: border-box
          border-radius: 50%
          text-align: center
-         background-color: #141d17
+         background-color: #141d27
          // background-color: yellow
          .icon
            display: inline-block

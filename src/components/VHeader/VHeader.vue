@@ -133,8 +133,8 @@
             bg-image(brand)
             background-size: 30px 18px
           .name
-            font-size: 6px
-            // line-height: 18px
+            font-size: 16px
+            line-height: 18px
             font-weight: 700
         .description
           margin-bottom: 10px

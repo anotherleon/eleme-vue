@@ -11,6 +11,11 @@ export default new Router({
   mode: 'history',
   routes: [
     {
+      path: '/',
+      name: 'home',
+      redirect: '/goods',
+    },
+    {
       path: '/goods',
       name: 'Goods',
       component: Goods,
